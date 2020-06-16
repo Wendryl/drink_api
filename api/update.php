@@ -4,9 +4,8 @@
   header('Access-Control-Allow-Methods: PUT');
   header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Request-With');
 
-  include_once '../config/Database.php';
-  include_once '../models/User.php';
-
+  include_once DIR . 'config/Database.php';
+  include_once DIR . 'models/User.php';
   $database = new Database();
   $db = $database->connect();
 
@@ -14,7 +13,11 @@
 
   $data = json_decode(file_get_contents("php://input"));
 
-  $user->id = isset($_GET['id']) ? $_GET['id'] : die();
+  $request_uri = filter_input(INPUT_SERVER, 'REQUEST_URI');
+  $request_uri = substr($request_uri, 19);
+  $route = explode('/', $request_uri);
+  $user->id = $route[2];
+
   $user->name = $data->name;
   $user->email = $data->email;
   $user->password = $data->password;

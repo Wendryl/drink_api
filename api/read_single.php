@@ -2,15 +2,18 @@
   header('Access-Control-Allow-Origin: *');
   header('Content-Type: application/json');
 
-  include_once '../config/Database.php';
-  include_once '../models/User.php';
+  include_once DIR . 'config/Database.php';
+  include_once DIR . 'models/User.php';
 
   $database = new Database();
   $db = $database->connect();
 
   $user = new User($db);
 
-  $user->id = isset($_GET['id']) ? $_GET['id'] : die();
+  $request_uri = filter_input(INPUT_SERVER, 'REQUEST_URI');
+  $request_uri = substr($request_uri, 19);
+  $route = explode('/', $request_uri);
+  $user->id = $route[2];
 
   $user->read_single();
 

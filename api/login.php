@@ -4,8 +4,8 @@
   header('Access-Control-Allow-Methods: POST');
   header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Request-With');
 
-  include_once '../config/Database.php';
-  include_once '../models/User.php';
+  include_once DIR . 'config/Database.php';
+  include_once DIR . 'models/User.php';
 
   $database = new Database();
   $db = $database->connect();
@@ -23,6 +23,6 @@
     );
   } else {
     echo json_encode(
-      array('message' => 'Error! Incorrect email-password!')
+      array('message' => 'Error! Incorrect email or password!')
     );
   }
