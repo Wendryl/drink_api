@@ -112,7 +112,7 @@
 
     public function drink() {
       $query = 'UPDATE ' . $this->table . '
-      SET drink_counter = :drink_counter
+      SET drink_counter = drink_counter + :drink_counter
       WHERE id = :id';
 
       $stmt = $this->connection->prepare($query);

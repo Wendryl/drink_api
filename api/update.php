@@ -2,8 +2,7 @@
   header('Access-Control-Allow-Origin: *');
   header('Content-Type: application/json');
   header('Access-Control-Allow-Methods: PUT');
-  header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type,
-  Access-Control-Allow-Methods, Authorization, X-Request-With');
+  header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Request-With');
 
   include_once '../config/Database.php';
   include_once '../models/User.php';
@@ -15,7 +14,7 @@
 
   $data = json_decode(file_get_contents("php://input"));
 
-  $user->id = $data->id;
+  $user->id = isset($_GET['id']) ? $_GET['id'] : die();
   $user->name = $data->name;
   $user->email = $data->email;
   $user->password = $data->password;
