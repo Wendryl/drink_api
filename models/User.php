@@ -158,15 +158,30 @@
       return false;
     }
 
-    // public function login() {
+    public function login() {
       
-    //   $query = 'SELECT * FROM ' . $this->table . '
-    //   WHERE id = :id';
+      $query = 'SELECT 
+      email, 
+      password 
+      FROM ' . $this->table . '
+      WHERE email = ?';
+      
+      $stmt = $this->connection->prepare($query);
 
-    //   $stmt = $this->connection->prepare($query);
-    //   $stmt->bindParam(':id', $this->id);
+      $stmt->bindParam(1, $this->email);
+      
+      $stmt->execute();
 
-    //   if($)
-    // }
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+      if($row > 0) {
+        if($this->password == $row['password']) {
+          return true;
+        }
+        return false;
+      }
+
+      return false;
+    }
 
   }
