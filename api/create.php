@@ -24,6 +24,6 @@
     );
   } else {
     echo json_encode(
-      array('message' => 'User Not Created')
+      array('message' => 'Error! User already Exists!')
     );
   }

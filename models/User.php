@@ -41,27 +41,56 @@
       $this->drink_counter = $row['drink_counter'];
     }
 
-    public function create() {
-      $query = 'INSERT INTO ' . 
-        $this->table . ' 
-      SET 
-        name = :name,
-        email = :email,
-        password = :password,
-        drink_counter = 0'
-      ;
-   
+    private function user_exists() {
+      $query = 'SELECT 
+      id, name, email, 
+      drink_counter 
+      FROM ' . $this->table . '
+      WHERE email = ?';
+      
       $stmt = $this->connection->prepare($query);
 
-      $stmt->bindParam(':name', $this->name);
-      $stmt->bindParam(':email', $this->email);
-      $stmt->bindParam(':password', $this->password);
+      $stmt->bindParam(1, $this->email);
+      
+      $stmt->execute();
 
-      if($stmt->execute()) {
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+      if($row > 0) {
         return true;
       }
 
-      printf("Error: %s.\n", $stmt->error);
+      return false;
+    }
+
+    public function create() {
+
+      if(!$this->user_exists()) {
+
+          $query = 'INSERT INTO ' . 
+          $this->table . ' 
+        SET 
+          name = :name,
+          email = :email,
+          password = :password,
+          drink_counter = 0'
+        ;
+    
+        $stmt = $this->connection->prepare($query);
+
+        $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':password', $this->password);
+
+        if($stmt->execute()) {
+          return true;
+        }
+
+        printf("Error: %s.\n", $stmt->error);
+
+        return false;
+        
+      }
 
       return false;
 
@@ -128,5 +157,16 @@
 
       return false;
     }
+
+    // public function login() {
+      
+    //   $query = 'SELECT * FROM ' . $this->table . '
+    //   WHERE id = :id';
+
+    //   $stmt = $this->connection->prepare($query);
+    //   $stmt->bindParam(':id', $this->id);
+
+    //   if($)
+    // }
 
   }
