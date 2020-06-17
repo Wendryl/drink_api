@@ -10,18 +10,25 @@
 
   $user = new User($db);
 
-  $request_uri = filter_input(INPUT_SERVER, 'REQUEST_URI');
-  $request_uri = substr($request_uri, 19);
-  $route = explode('/', $request_uri);
-  $user->id = $route[2];
+  if(isset($_COOKIE['token'])) {
+    
+    $request_uri = filter_input(INPUT_SERVER, 'REQUEST_URI');
+    $request_uri = substr($request_uri, 19);
+    $route = explode('/', $request_uri);
+    $user->id = $route[2];
 
-  $user->read_single();
+    $user->read_single();
 
-  $user_arr = array(
-    'id' => $user->id,
-    'name' => $user->name,
-    'email' => $user->email,
-    'drink_counter' => $user->drink_counter,
-  );
+    $user_arr = array(
+      'id' => $user->id,
+      'name' => $user->name,
+      'email' => $user->email,
+      'drink_counter' => $user->drink_counter,
+    );
 
-  print_r(json_encode($user_arr));
+    print_r(json_encode($user_arr));
+  } else {
+    echo json_encode(
+      array('Message' => 'User not authenticated.')
+    );
+  }

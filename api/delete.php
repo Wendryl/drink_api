@@ -19,12 +19,19 @@
   $route = explode('/', $request_uri);
   $user->id = $route[2];
 
-  if($user->delete()) {
-    echo json_encode(
-      array('message' => 'User Deleted')
-    );
+  if($user->authenticate()) {
+    
+    if($user->delete()) {
+      echo json_encode(
+        array('message' => 'User Deleted')
+      );
+    } else {
+      echo json_encode(
+        array('message' => 'User Not Deleted due to unexpected error!')
+      );
+    }
   } else {
     echo json_encode(
-      array('message' => 'User Not Deleted')
+      array('Message' => 'Error! You can only delete your own user!')
     );
   }

@@ -21,20 +21,26 @@
 
   $user->drink_counter = $data->drink_counter;
 
-  if($user->drink()) {
-    $user->read_single();
+  if(isset($_COOKIE['token'])) {
+    if($user->drink()) {
+      $user->read_single();
 
-    $user_arr = array(
-      'id' => $user->id,
-      'name' => $user->name,
-      'email' => $user->email,
-      'drink_counter' => $user->drink_counter,
-    );
+      $user_arr = array(
+        'id' => $user->id,
+        'name' => $user->name,
+        'email' => $user->email,
+        'drink_counter' => $user->drink_counter,
+      );
 
-    print_r(json_encode($user_arr));
-    
+      print_r(json_encode($user_arr));
+      
+    } else {
+      echo json_encode(
+        array('message' => 'User Drink Counter Not Updated')
+      );
+    }
   } else {
     echo json_encode(
-      array('message' => 'User Drink Counter Not Updated')
+      array('Message' => 'User not authenticated.')
     );
   }

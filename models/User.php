@@ -8,6 +8,7 @@
     public $email;
     public $name;
     public $password;
+    public $token;
 
     public function __construct($db) {
       $this->connection = $db;
@@ -97,6 +98,7 @@
     }
 
     public function update() {
+      
       $query = 'UPDATE ' . 
         $this->table . ' 
       SET 
@@ -161,6 +163,7 @@
     public function login() {
       
       $query = 'SELECT 
+      id,
       email, 
       password 
       FROM ' . $this->table . '
@@ -176,12 +179,29 @@
     
       if($row > 0) {
         if($this->password == $row['password']) {
+          $this->id = $row['id'];
+          $this->set_credentials();
           return true;
         }
         return false;
       }
 
       return false;
+    }
+
+    private function set_credentials() {
+      $token = $this->id . 'secret-code';
+      setcookie('token', md5($token), time() + 60 * 5);
+    }
+
+    public function authenticate() {
+      $this->token = isset($_COOKIE['token']) ? $_COOKIE['token'] : '';
+      $token = $this->id . 'secret-code';
+      if($this->token === md5($token)) {
+        return true;
+      } else {
+        return false;
+      }
     }
 
   }
