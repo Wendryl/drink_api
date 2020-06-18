@@ -35,11 +35,17 @@
       $stmt->execute();
 
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+      
+      if($row['id'] == '') {
+        return false;
+      }
+
       $this->id = $row['id'];
       $this->name = $row['name'];
       $this->email = $row['email'];
       $this->drink_counter = $row['drink_counter'];
+
+      return true;
     }
 
     private function user_exists() {

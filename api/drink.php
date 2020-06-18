@@ -23,16 +23,21 @@
 
   if(isset($_COOKIE['token'])) {
     if($user->drink()) {
-      $user->read_single();
+      if($user->read_single()) {
+        $user_arr = array(
+          'id' => $user->id,
+          'name' => $user->name,
+          'email' => $user->email,
+          'drink_counter' => $user->drink_counter,
+        );
+  
+        print_r(json_encode($user_arr));
+      } else {
+        echo json_encode(
+          array('Message' => 'User not found.')
+        );
+      }
 
-      $user_arr = array(
-        'id' => $user->id,
-        'name' => $user->name,
-        'email' => $user->email,
-        'drink_counter' => $user->drink_counter,
-      );
-
-      print_r(json_encode($user_arr));
       
     } else {
       echo json_encode(
