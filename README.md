@@ -1,5 +1,5 @@
 # DRINK_API 
-A API REST devloped for a job test
+An API REST developed for a job test
 
 ## Cloning
 Clone the project into a web server folder. Usually, in linux distributions, it's located at: /var/www/html/
